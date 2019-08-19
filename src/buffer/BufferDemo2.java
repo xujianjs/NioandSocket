@@ -93,8 +93,96 @@ public class BufferDemo2 {
             System.out.println(charBuffer.get());
         }
 
+    }
 
+    @Test
+    public void test4() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(200);
+        System.out.println(byteBuffer.hasArray());
+        byteBuffer.put((byte) 1);
+        System.out.println(byteBuffer.hasArray());
+
+        ByteBuffer direct = ByteBuffer.allocateDirect(100);
+        System.out.println(direct.hasArray());
+        direct.put((byte) 0);
+        System.out.println(direct.hasArray());
+    }
+
+    @Test
+    public void test5() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(3);
+        byteBuffer.put((byte) 1);
+        byteBuffer.put((byte) 2);
+        byteBuffer.put((byte) 3);
+
+        System.out.println(byteBuffer.position());
+        System.out.println(byteBuffer.limit());
+
+        byteBuffer.position(2);
+        // 计算出position和limit的元素个数
+        System.out.println(byteBuffer.remaining());
 
     }
+
+    @Test
+    public void test6() {
+        byte[] bytes = new byte[]{1,2,3,4,5,6};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        while (byteBuffer.hasRemaining()) {
+            //Relative <i>get</i> method.  Reads the byte at this buffer's
+            //     * current position, and then increments the position.
+            System.out.println(byteBuffer.get());
+        }
+        System.out.println(byteBuffer);
+        byteBuffer.clear();
+        System.out.println(byteBuffer);
+    }
+
+    @Test
+    public void test7() {
+        byte[] bytes = new byte[]{1,2,3,4,5,6};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        System.out.printf("capacity=%d, position=%d,  limit=%d\n",byteBuffer.capacity(),byteBuffer.position(),byteBuffer.limit());
+
+        byteBuffer.position(1);
+        byteBuffer.limit(3);
+        byteBuffer.mark();
+        System.out.printf("capacity=%d, position=%d,  limit=%d\n",byteBuffer.capacity(),byteBuffer.position(),byteBuffer.limit());
+
+        //冲绕此缓冲区（不改变limit）
+        //        position = 0;
+        //        mark = -1;
+        byteBuffer.rewind();
+        System.out.printf("capacity=%d, position=%d,  limit=%d\n",byteBuffer.capacity(),byteBuffer.position(),byteBuffer.limit());
+
+        //因为丢弃了mark  这里会抛出异常
+        byteBuffer.reset();
+    }
+
+    @Test
+    public void test8() {
+        byte[] bytes = new byte[]{1,2,3,4,5,6};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        boolean b = byteBuffer.hasArray();
+        System.out.printf("hasArray=%s\n",b);
+        System.out.printf("arrayOffset=%d\n",byteBuffer.arrayOffset());
+    }
+
+     @Test
+    public void test9() {
+         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(20);
+         byte[] bytes = new byte[]{1,2,3,4,5,6};
+         byteBuffer.put(bytes);
+        boolean b = byteBuffer.hasArray();
+        System.out.printf("hasArray=%s\n",b);
+        //  * <p> Invoke the {@link #hasArray hasArray} method before invoking this
+         //     * method in order to ensure that this buffer has an accessible backing
+         //     * array.  </p>
+         //必须要有备份数组，如果是直接放入内存的话  会抛出异常java.lang.UnsupportedOperationException
+         // 所以调用arrayOffset方法前，先调用hasArray方法去校验一次
+        System.out.printf("arrayOffset=%d\n",byteBuffer.arrayOffset());
+    }
+
+
 
 }
