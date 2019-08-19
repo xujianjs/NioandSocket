@@ -40,4 +40,20 @@ public class BufferDemo1 {
         System.out.printf("doubleBuffer:%s,doubleBuffer.capacity=%s\n",doubleBuffer.getClass().getName(),doubleBuffer.capacity());
         System.out.printf("charBuffer:%s,charBuffer.capacity=%s\n",charBuffer.getClass().getName(),charBuffer.capacity());
     }
+
+    @Test
+    public void test2() {
+        char[] charArray = new char[]{'a','b','c','d','e'};
+        CharBuffer charBuffer = CharBuffer.wrap(charArray);
+        System.out.printf("charBuffer=%s,limit()=%s\n",charBuffer.getClass().getName(), charBuffer.limit());
+        charBuffer.limit(3);
+        System.out.printf("charBuffer=%s,limit()=%s\n",charBuffer.getClass().getName(), charBuffer.limit());
+
+        charBuffer.put(0, 'o');
+        charBuffer.put(1, 'p');
+        charBuffer.put(2, 'q');
+        charBuffer.put(3, 'r');//java.lang.IndexOutOfBoundsException 从这一行开始报错 因为limit限制从limit的设定值3的下标开始  不准进行读/写
+        charBuffer.put(4, 's');
+        charBuffer.put(5, 't');
+    }
 }
