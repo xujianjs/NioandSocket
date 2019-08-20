@@ -2,6 +2,8 @@ package buffer;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -183,6 +185,30 @@ public class BufferDemo2 {
         System.out.printf("arrayOffset=%d\n",byteBuffer.arrayOffset());
     }
 
+    @Test
+    public void test10() {
+        ByteBuffer byteBuffer1 = ByteBuffer.wrap(new byte[]{'a', 'b', 'c'});
+        ByteBuffer byteBuffer2 = ByteBuffer.wrap(new byte[]{'x', 'y', 'z'});
+        ByteBuffer byteBuffer3 = ByteBuffer.wrap(new byte[]{'1', '2', '3'});
+
+        List<ByteBuffer> list = new ArrayList() {{
+            add(byteBuffer1);
+            add(byteBuffer2);
+            add(byteBuffer3);
+        }};
+
+        ByteBuffer[] byteBuffers=new ByteBuffer[list.size()];
+
+        //通过list的toArray方法把装有字节缓冲的集合 拷贝到缓冲数组byteBuffers中
+        list.toArray(byteBuffers);
+
+        for (ByteBuffer byteBuffer : byteBuffers) {
+            while (byteBuffer.hasRemaining()) {
+                System.out.println((char)byteBuffer.get());
+            }
+        }
+
+    }
 
 
 }
