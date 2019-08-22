@@ -11,6 +11,8 @@ public class Test {
     public static void main(String[] args) {
         Animal cat = new Cat();
         Dog dog = new Dog();
+        System.out.println(cat instanceof Animal);
+        System.out.println(cat instanceof Cat);
         Animal animal = new Animal();
 //        cat.say();//Error:(7, 12) java: say() 在 polymorphism.Animal 中是 private 访问控制
 //        animal.say();//Error:(9, 15) java: say() 在 polymorphism.Animal 中是 private 访问控制

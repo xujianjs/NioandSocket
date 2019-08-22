@@ -1,6 +1,7 @@
 package buffer;
 
 import org.junit.Test;
+import sun.misc.Unsafe;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -83,4 +84,64 @@ public class BufferDemo3 {
 
 
     }
+
+    @Test
+    public void test3() throws InterruptedException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(Integer.MAX_VALUE);
+        byte[] bytes = {1};//存入一个字节
+        for (int i = 0; i <Integer.MAX_VALUE ; i++) {
+            byteBuffer.put(bytes);
+        }
+        System.out.println("put done!");
+        Thread.sleep(1000);
+
+        //此程序运行多次后，一直在耗费内存
+        //进程结束后，也不会立即回收内存
+        //而是在某个时候，触发垃圾回收
+        //运行多个test，然后观察下
+    }
+
+     @Test
+    public void test4() throws InterruptedException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(Integer.MAX_VALUE);
+        byte[] bytes = {1};//存入一个字节
+        for (int i = 0; i <Integer.MAX_VALUE ; i++) {
+            byteBuffer.put(bytes);
+        }
+        System.out.println("put done!");
+        Thread.sleep(1000);
+
+        //此程序运行多次后，一直在耗费内存
+        //进程结束后，也不会立即回收内存
+        //而是在某个时候，触发垃圾回收
+        //运行多个test，然后观察下
+    }
+    @Test
+    public void test5() throws InterruptedException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(Integer.MAX_VALUE);
+        byte[] bytes = {1};//存入一个字节
+        for (int i = 0; i <Integer.MAX_VALUE ; i++) {
+            byteBuffer.put(bytes);
+        }
+        System.out.println("put done!");
+        Thread.sleep(1000);
+
+        //此程序运行多次后，一直在耗费内存
+        //进程结束后，也不会立即回收内存
+        //而是在某个时候，触发垃圾回收
+        //运行多个test，然后观察下
+    }
+
+
+    @Test
+    public void test6() {
+        //  Unsafe是直接和操作系统通信的  见名知意：使用是不安全的   因此它做了限定@CallerSensitive
+        // 只有内部的isSystemDomainLoader才会得到对象,否则抛出：java.lang.SecurityException: Unsafe
+        //  @CallerSensitive
+        Unsafe unsafe = Unsafe.getUnsafe();
+        System.out.println(unsafe.toString());
+    }
+
+
+
 }
