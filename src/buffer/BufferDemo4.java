@@ -65,4 +65,75 @@ public class BufferDemo4 {
         stream2.forEach(x -> System.out.println(x));
 
     }
+
+    @Test
+    public void test3() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+
+        byteBuffer.put((byte) 'a');//占1个字节
+        byteBuffer.putChar('a');//占2个字节
+        byteBuffer.putInt(1);//占4个字节
+        byteBuffer.putShort((short)1);//占2个字节
+        System.out.println("记录long:2L位置"+byteBuffer.position());
+        byteBuffer.putLong(2L);//占8个字节
+        System.out.println("记录float:1.5f位置"+byteBuffer.position());
+        byteBuffer.putFloat(1.5f);//占4个字节
+        byteBuffer.putDouble(2.2);//占8个字节
+
+        byte[] array = byteBuffer.array();
+        System.out.println(byteBuffer.position());
+
+        System.out.println((char)byteBuffer.get(0));
+        System.out.println(byteBuffer.getChar(1));
+        System.out.println(byteBuffer.getInt(3));
+        System.out.println(byteBuffer.getLong(9));
+        System.out.println(byteBuffer.getFloat(17));
+    }
+
+    @Test
+    public void test4() {
+        byte[] byteArray = new byte[]{1,2,3,4,5,6,7,8};
+        ByteBuffer byteBuffer1 = ByteBuffer.wrap(byteArray);
+        byteBuffer1.position(5);
+        byteBuffer1.limit(6);
+
+        System.out.printf("A----position:%d limit:%d capacity:%d ",byteBuffer1.position(),byteBuffer1.limit(),byteBuffer1.capacity());
+        System.out.println();
+        ByteBuffer byteBuffer2 = byteBuffer1.slice();
+        System.out.printf("byteBuffer1-----arrayOffset:%d\n",byteBuffer1.arrayOffset());
+
+        System.out.printf("B----position:%d limit:%d capacity:%d\n",byteBuffer2.position(),byteBuffer2.limit(),byteBuffer2.capacity());
+
+
+        byteBuffer1.put((byte) 111);
+//        byteBuffer1.put((byte) 222);//抛出java.nio.BufferOverflowException  -----  调用slice后 (共享序列)实际容量变为了1  只能写入一个字节
+
+        byte[] array1 = byteBuffer1.array();
+        byte[] array2 = byteBuffer2.array();
+
+        System.out.println();
+        for (byte b : array1) {
+            System.out.print(b+" ");
+        }
+        System.out.println();
+
+        for (byte b : array2) {
+            System.out.print(b+" ");
+        }
+
+    }
+
+
+    @Test
+    public void test5() {
+        byte[] byteArray1 = new byte[]{1,2,3,4,5,6,7,8};
+        ByteBuffer byteBuffer1 = ByteBuffer.wrap(byteArray1);
+        byteBuffer1.position(5);
+        ByteBuffer byteBuffer2 = byteBuffer1.slice();
+
+        //在使用 slice() 方法后，再调用 arrayOffset()方法 ，会出现返回值<>0 的情况
+        System.out.printf("byteBuffer2----arrayOffset:%d\n",byteBuffer2.arrayOffset());
+        //byteBuffer2的第一个元素相当于byteArray1数组中索引为5的元素
+        System.out.println(byteBuffer2.get());//6
+    }
 }
